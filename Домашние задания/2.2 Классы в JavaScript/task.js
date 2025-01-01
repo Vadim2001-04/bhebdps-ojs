@@ -164,3 +164,54 @@ console.log("Состояние книги после восстановлени
 
 library.addBook(borrowedBook);
 console.log("Количество книг после возвращения: " + library.books.length); //Количество книг после возвращения: 4
+
+
+
+
+class Student {
+  constructor(name) {
+    this.name = name;
+    this.marks = {};
+  }
+
+  addMark(mark, subject) {
+    if (mark < 2 || mark > 5) {
+      console.log("Оценка должна быть от 2 до 5");
+      return;
+    }
+
+    if (!this.marks[subject]) {
+      this.marks[subject] = [];
+    }
+
+    this.marks[subject].push(mark);
+  }
+
+  getAverageBySubject(subject) {
+    if (!this.marks[subject]) {
+      return 0;
+    }
+
+    const sum = this.marks[subject].reduce((acc, curr) => acc + curr, 0);
+    return sum / this.marks[subject].length;
+  }
+
+  getAverage() {
+    const subjects = Object.keys(this.marks);
+    const totalMarks = subjects.reduce((acc, subject) => {
+      return acc + this.getAverageBySubject(subject);
+    }, 0);
+
+    return totalMarks / subjects.length;
+  }
+}
+
+const student = new Student("Олег Никифоров");
+student.addMark(5, "химия");
+student.addMark(5, "химия");
+student.addMark(5, "физика");
+student.addMark(4, "физика");
+student.addMark(6, "физика"); // Оценка не добавится, так как больше 5
+console.log(student.getAverageBySubject("физика")); // Средний балл по предмету физика 4.5
+console.log(student.getAverageBySubject("биология")); // Вернёт 0, так как по такому предмету нет оценок
+console.log(student.getAverage()); // Средний балл по всем предметам 4.75
